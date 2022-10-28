@@ -2,7 +2,7 @@ import { Workout } from "../models/workoutModel.js";
 import { asyncHandler, isValidObjectId } from "../utils/index.js";
 
 const getAllWorks = asyncHandler(async (req, res, next) => {
-  const workouts = await Workout.find({});
+  const workouts = await Workout.find({}).sort("-updatedAt");
 
   res.status(200).json({ data: workouts });
 });
