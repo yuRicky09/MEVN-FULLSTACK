@@ -5,7 +5,7 @@ const workoutSchema = mongoose.Schema(
     title: {
       type: String,
     },
-    reqs: {
+    reps: {
       type: Number,
     },
     load: {
