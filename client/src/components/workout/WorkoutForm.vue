@@ -15,7 +15,6 @@ async function handleSubmit() {
       load: load.value,
       reps: reps.value,
     });
-    console.log(workout);
 
     resetForm();
     workoutStore.workouts = [workout, ...workoutStore.workouts];

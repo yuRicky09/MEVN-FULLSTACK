@@ -23,19 +23,11 @@ const getAllWorkouts = async () => {
 };
 
 const createWorkout = async (workout: Workout) => {
-  try {
-    const {
-      data: { data: newWorkout },
-    } = await request.post<AxiosResponse<CreatedWorkout>>("/workouts", workout);
-    return newWorkout;
-  } catch (err) {
-    console.log(err);
-    if (err instanceof Error) {
-      if (typeof err.message === "string") throw new Error(err.message);
-    }
+  const {
+    data: { data: newWorkout },
+  } = await request.post<AxiosResponse<CreatedWorkout>>("/workouts", workout);
 
-    throw new Error("Create workout failed");
-  }
+  return newWorkout;
 };
 
 const deleteWorkout = async (id: string) => {
