@@ -1,6 +1,5 @@
 import { createApp } from "vue";
-import { createPinia } from "pinia";
-
+import { pinia } from "@/lib/pinia";
 import App from "@/App.vue";
 import router from "@/router";
 import "@/assets/css/index.css";
@@ -10,7 +9,7 @@ import "@formkit/themes/genesis";
 const app = createApp(App);
 
 app.use(plugin, defaultConfig);
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 
 app.mount("#app");

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { deleteWorkout } from "@/api/workout";
-import { useWorkout } from "@/stores/workout";
+import { useWorkoutStore } from "@/stores/workout";
 import { formatDistanceToNow } from "date-fns";
 import { zhTW } from "date-fns/locale";
 
@@ -14,7 +14,7 @@ defineProps<{
   };
 }>();
 
-const workoutStore = useWorkout();
+const workoutStore = useWorkoutStore();
 
 async function handleDelete(id: string) {
   try {

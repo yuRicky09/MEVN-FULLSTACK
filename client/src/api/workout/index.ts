@@ -2,16 +2,12 @@ import { request } from "../request";
 
 import type { Workout, CreatedWorkout } from "@/types";
 
-interface AxiosResponse<T> {
-  data: T;
-}
-
 const getAllWorkouts = async () => {
   try {
-    const {
-      data: { data: workouts },
-    } = await request.get<AxiosResponse<CreatedWorkout[]>>("/workouts");
-    return workouts;
+    const { data } = await request.get<{ workouts: CreatedWorkout[] }>(
+      "/workouts"
+    );
+    return data.workouts;
   } catch (err) {
     console.log(err);
     if (err instanceof Error) {
@@ -23,11 +19,12 @@ const getAllWorkouts = async () => {
 };
 
 const createWorkout = async (workout: Workout) => {
-  const {
-    data: { data: newWorkout },
-  } = await request.post<AxiosResponse<CreatedWorkout>>("/workouts", workout);
+  const { data } = await request.post<{ workout: CreatedWorkout }>(
+    "/workouts",
+    workout
+  );
 
-  return newWorkout;
+  return data.workout;
 };
 
 const deleteWorkout = async (id: string) => {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { createWorkout } from "@/api/workout";
-import { useWorkout } from "@/stores/workout";
+import { useWorkoutStore } from "@/stores/workout";
 
 const error = ref("");
 const title = ref("");
 const load = ref(0);
 const reps = ref(0);
-const workoutStore = useWorkout();
+const workoutStore = useWorkoutStore();
 
 async function handleSubmit() {
   try {

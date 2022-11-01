@@ -2,4 +2,8 @@
   .click-target-helper {
     @apply relative after:absolute after:top-[var(--inset-by)] after:left-[var(--inset-by)] after:right-[var(--inset-by)] after:bottom-[var(--inset-by)];
   }
+
+  .form-layout {
+    @apply mx-auto mt-10 max-w-[400px] rounded bg-white p-5;
+  }
 }

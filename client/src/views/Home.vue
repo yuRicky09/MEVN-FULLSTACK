@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getAllWorkouts } from "@/api/workout";
-import { useWorkout } from "@/stores/workout";
+import { useWorkoutStore } from "@/stores/workout";
 
-const workoutStore = useWorkout();
+const workoutStore = useWorkoutStore();
 try {
   workoutStore.workouts = await getAllWorkouts();
 } catch (err) {
@@ -12,7 +12,7 @@ try {
 
 <template>
   <div class="home">
-    <div class="workouts">
+    <div v-if="workoutStore.workoutTotal > 0" class="workouts">
       <WorkoutDetail
         v-for="workout in workoutStore.workouts"
         :key="workout.title"

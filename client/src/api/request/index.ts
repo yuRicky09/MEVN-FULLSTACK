@@ -1,16 +1,41 @@
 import axios from "axios";
 
+import type { UserState } from "@/types";
+
+let myInterceptor: number;
 const request = axios.create({
   baseURL: "/api",
 });
 
-// request.interceptors.response.use(
-//   (response) => response,
-//   (err) => {
-//     console.error("Error統一處理", err);
-//     // throw new Error(err) 等同於Promise.reject(err)
-//     return Promise.reject(err.response.data);
-//   }
-// );
+myInterceptor = request.interceptors.request.use((config) => {
+  if (config.headers) {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const { token } = JSON.parse(user) as UserState;
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
 
-export { request };
+  return config;
+});
+
+// 用戶登出or登入 重設置攔截器的headers
+function setAuthorizationToken(token: string | null) {
+  request.interceptors.request.eject(myInterceptor);
+  myInterceptor = request.interceptors.request.use((config) => {
+    if (config.headers) {
+      token
+        ? (config.headers = {
+            ...config.headers,
+            Authorization: `Bearer ${token}`,
+          })
+        : (config.headers = {
+            ...config.headers,
+          });
+    }
+
+    return config;
+  });
+}
+
+export { request, setAuthorizationToken };

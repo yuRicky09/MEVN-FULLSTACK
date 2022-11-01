@@ -1,63 +1,89 @@
 <script setup lang="ts">
+import { reset } from "@formkit/core";
+import { signup } from "@/api";
+import { useErrorHandling } from "@/composables/error-handling";
+import { useUserStore } from "@/stores/user";
+import { setAuthorizationToken } from "@/api";
+
+interface SignupFormData {
+  email: string;
+  password: string;
+  password_confirm: string;
+}
+
+const { errorMsg, handleError } = useErrorHandling();
+const userStore = useUserStore();
+const router = useRouter();
 const submitted = ref(false);
-const submitHandler = async () => {
-  // Let's pretend this is an ajax request:
-  await new Promise((r) => setTimeout(r, 1000));
-  submitted.value = true;
+const submitHandler = async (data: SignupFormData) => {
+  try {
+    errorMsg.value = "";
+    // If the @submit handler returns a Promise, sets the form’s state to loading until it resolves.
+    const { email, password } = data;
+    const { user, token } = await signup({ email, password });
+    userStore.user = user;
+    userStore.token = token;
+
+    submitted.value = true;
+    reset("registration-example");
+    setAuthorizationToken(token);
+    router.push({ name: "Home" });
+  } catch (err) {
+    handleError(err);
+  }
 };
 </script>
 
 <template>
-  <FormKit
-    id="registration-example"
-    #default="{ value }"
-    :actions="false"
-    type="form"
-    :form-class="submitted ? 'hide' : 'show'"
-    submit-label="Register"
-    @submit="submitHandler"
-  >
-    <h1>Register!</h1>
-    <p>
-      You can put any type of element inside a form, not just FormKit inputs
-      (although only FormKit inputs are included with the submission).
-    </p>
-    <hr />
+  <div class="form-layout">
     <FormKit
-      type="text"
-      name="email"
-      label="Your email"
-      placeholder="jane@example.com"
-      help="What email should we use?"
-      validation="required|email"
-    />
-    <div class="double">
-      <!-- [^....] Match any character that is not in the set -->
+      id="registration-example"
+      #default="{ value, state: { valid } }"
+      :actions="false"
+      type="form"
+      :form-class="submitted ? 'hide' : 'show'"
+      submit-label="Register"
+      :errors="[errorMsg]"
+      @submit="submitHandler"
+    >
+      <h1 class="my-4 text-2xl">Register!</h1>
+      <hr />
       <FormKit
-        type="password"
-        name="password"
-        label="Password"
-        validation="required|length:6|matches:/[^a-zA-Z]/"
-        :validation-messages="{
-          matches: 'Please include at least one symbol',
-        }"
-        placeholder="Your password"
-        help="Choose a password"
+        type="text"
+        name="email"
+        label="Your email"
+        placeholder="jane@example.com"
+        help="What email should we use?"
+        validation="required|email"
       />
-      <FormKit
-        type="password"
-        name="password_confirm"
-        label="Confirm password"
-        placeholder="Confirm password"
-        validation="required|confirm"
-        help="Confirm your password"
-      />
-    </div>
+      <div class="double">
+        <!-- [^....] Match any character that is not in the set -->
+        <FormKit
+          type="password"
+          name="password"
+          label="Password"
+          validation="required|length:6|matches:/[^a-zA-Z]/"
+          :validation-messages="{
+            matches: 'Please include at least one symbol',
+          }"
+          placeholder="Your password"
+          help="Choose a password"
+        />
+        <FormKit
+          type="password"
+          name="password_confirm"
+          label="Confirm password"
+          placeholder="Confirm password"
+          validation="required|confirm"
+          help="Confirm your password"
+        />
+      </div>
 
-    <FormKit type="submit" label="Register" />
-    <pre wrap>{{ value }}</pre>
-  </FormKit>
-  <div v-if="submitted">
-    <h2>Submission successful!</h2>
+      <FormKit type="submit" label="Register" :disabled="!valid" />
+      <pre wrap>{{ value }}</pre>
+    </FormKit>
+    <div v-if="submitted">
+      <h2>Submission successful!</h2>
+    </div>
   </div>
 </template>

@@ -6,10 +6,15 @@ interface WorkoutState {
   workouts: CreatedWorkout[];
 }
 
-export const useWorkout = defineStore("workout", {
+export const useWorkoutStore = defineStore("workout", {
   state: (): WorkoutState => {
     return {
       workouts: [],
     };
+  },
+  getters: {
+    workoutTotal(state) {
+      return state.workouts.length;
+    },
   },
 });
