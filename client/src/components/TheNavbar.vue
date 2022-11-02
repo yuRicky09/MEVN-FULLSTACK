@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { useWorkoutStore } from "@/stores/workout";
-import { setAuthorizationToken } from "@/api";
+import { logout as sendLogout } from "@/api";
 
 const userStore = useUserStore();
 const workoutStore = useWorkoutStore();
 const router = useRouter();
 
-function logout() {
+async function logout() {
   userStore.logout();
-  setAuthorizationToken(null);
+  // setAuthorizationToken(null);
   workoutStore.$reset();
+  await sendLogout();
   router.push({ name: "Login" });
 }
 </script>

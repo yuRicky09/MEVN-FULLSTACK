@@ -23,3 +23,7 @@ export const login = async (formData: FormData) => {
 
   return data;
 };
+
+export const logout = async () => {
+  await request.post("/users/logout");
+};

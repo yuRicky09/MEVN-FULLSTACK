@@ -3,7 +3,7 @@ import { reset } from "@formkit/core";
 import { signup } from "@/api";
 import { useErrorHandling } from "@/composables/error-handling";
 import { useUserStore } from "@/stores/user";
-import { setAuthorizationToken } from "@/api";
+// import { setAuthorizationToken } from "@/api";
 
 interface SignupFormData {
   email: string;
@@ -26,7 +26,7 @@ const submitHandler = async (data: SignupFormData) => {
 
     submitted.value = true;
     reset("registration-example");
-    setAuthorizationToken(token);
+    // setAuthorizationToken(token);
     router.push({ name: "Home" });
   } catch (err) {
     handleError(err);
