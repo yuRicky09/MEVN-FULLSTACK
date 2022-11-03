@@ -2,8 +2,9 @@
 import { reset } from "@formkit/core";
 import { login } from "@/api";
 import { useErrorHandling } from "@/composables/error-handling";
-import { setAuthorizationToken } from "@/api";
+import { setAuthorizationHeader } from "@/api";
 import { useUserStore } from "@/stores/user";
+import { useRefreshTokenStore } from "@/stores/refresh-token";
 
 interface LoginFormData {
   email: string;
@@ -14,17 +15,20 @@ const submitted = ref(false);
 const { errorMsg, handleError } = useErrorHandling();
 const userStore = useUserStore();
 const router = useRouter();
+const refreshTokenStore = useRefreshTokenStore();
+
 const submitHandler = async (data: LoginFormData) => {
   try {
     errorMsg.value = "";
-    const { token, user } = await login(data);
+    const { token, user, accessTokenExpireIn } = await login(data);
 
     userStore.user = user;
-    userStore.token = token;
-    setAuthorizationToken(token);
-
     submitted.value = true;
+
+    setAuthorizationHeader(token);
     reset("registration-example");
+    refreshTokenStore.silentRefresh(accessTokenExpireIn);
+
     router.push({ name: "Home" });
   } catch (err) {
     handleError(err);

@@ -3,6 +3,8 @@ import express from "express";
 import { router as workoutRouter } from "./routes/workouts.js";
 import { router as userRouter } from "./routes/user.js";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 
@@ -10,6 +12,8 @@ const app = express();
 
 // middleware
 app.use(express.json());
+app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+app.use(cookieParser());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
 

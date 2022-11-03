@@ -8,18 +8,30 @@ try {
 } catch (err) {
   console.log(err);
 }
+
+async function refresh() {
+  const workouts = await getAllWorkouts();
+  console.log("🚀 ~ file: Home.vue ~ line 14 ~ refresh ~ workouts", workouts);
+}
 </script>
 
 <template>
-  <div class="home">
-    <div v-if="workoutStore.workoutTotal > 0" class="workouts">
-      <WorkoutDetail
-        v-for="workout in workoutStore.workouts"
-        :key="workout.title"
-        :workout="workout"
-      />
+  <div>
+    <div>
+      <button class="flex gap-2" @click="refresh">
+        <i-bx-refresh /> refresh
+      </button>
     </div>
-    <WorkoutForm />
+    <div class="home">
+      <div v-if="workoutStore.workoutTotal > 0" class="workouts">
+        <WorkoutDetail
+          v-for="workout in workoutStore.workouts"
+          :key="workout.title"
+          :workout="workout"
+        />
+      </div>
+      <WorkoutForm />
+    </div>
   </div>
 </template>
 

@@ -6,7 +6,6 @@ export const useUserStore = defineStore("user", {
   state: (): UserState => {
     return {
       user: null,
-      token: "",
     };
   },
   actions: {
