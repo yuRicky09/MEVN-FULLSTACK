@@ -23,15 +23,11 @@ myInterceptor = request.interceptors.request.use((config) => {
 function setAuthorizationToken(token: string | null) {
   request.interceptors.request.eject(myInterceptor);
   myInterceptor = request.interceptors.request.use((config) => {
-    if (config.headers) {
-      token
-        ? (config.headers = {
-            ...config.headers,
-            Authorization: `Bearer ${token}`,
-          })
-        : (config.headers = {
-            ...config.headers,
-          });
+    if (config.headers && token) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${token}`,
+      };
     }
 
     return config;
