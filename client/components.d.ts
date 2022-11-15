@@ -8,8 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Home: typeof import('./src/views/Home.vue')['default']
-    IBxAlarmExclamation: typeof import("~icons/bx/alarm-exclamation")["default"]
-    IBxBattery: typeof import("~icons/bx/battery")["default"]
     IBxTrash: typeof import('~icons/bx/trash')['default']
     Login: typeof import('./src/views/Login.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

@@ -2,7 +2,6 @@
 import { reset } from "@formkit/core";
 import { login } from "@/api";
 import { useErrorHandling } from "@/composables/error-handling";
-// import { setAuthorizationToken } from "@/api";
 import { useUserStore } from "@/stores/user";
 
 interface LoginFormData {
@@ -21,8 +20,6 @@ const submitHandler = async (data: LoginFormData) => {
 
     userStore.user = user;
     userStore.token = token;
-    // setAuthorizationToken(token);
-    console.log(document.cookie);
     submitted.value = true;
     reset("registration-example");
     router.push({ name: "Home" });
