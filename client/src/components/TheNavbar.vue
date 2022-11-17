@@ -12,6 +12,7 @@ const router = useRouter();
 async function logout() {
   try {
     userStore.logout();
+    refreshTokenStore.clearSilentRefresh();
     refreshTokenStore.$reset();
     workoutStore.$reset();
     setAuthorizationHeader(null);

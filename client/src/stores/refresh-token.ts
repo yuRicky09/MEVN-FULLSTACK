@@ -19,5 +19,8 @@ export const useRefreshTokenStore = defineStore("refreshToken", {
         console.log("Silent refresh!");
       }, accessTokenExpireIn - 500);
     },
+    clearSilentRefresh() {
+      this.timer && clearInterval(this.timer);
+    },
   },
 });
